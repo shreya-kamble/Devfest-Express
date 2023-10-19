@@ -9,7 +9,7 @@ module.exports = async function executeChildProcess(executingCmd,projectName) {
         
         // child = spawn(`npx`,[`create-next-app@latest`, `testing`, `--js`, `--src-dir`, `--no-use-npm`, `--eslint`, `--tailwind`, `--app`, `--no-import-alias`]);
 
-        child = spawn(`npx`,[`create-next-app@12`, `testing`, `--js`, `--src-dir`, `--no-use-npm`, `--eslint`, `--tailwind`, `--app`]);
+        child = spawn(`npx`,[`create-next-app@12`, `${projectName}`, `--js`, `--src-dir`, `--no-use-npm`, `--eslint`, `--tailwind`, `--app`]);
 
     }
     else if(executingCmd = `gitInit`){
