@@ -3,7 +3,7 @@ const {Octokit} = require("octokit");
 module.exports = async function createGitRepo(projectName){
 
     const octokit = new Octokit({
-        auth: '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'
+        auth: process.env.GIT_TOKEN
       })
 
 //    await octokit.request('POST /user/repos', {
