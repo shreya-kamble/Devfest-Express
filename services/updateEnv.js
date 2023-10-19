@@ -1,9 +1,10 @@
-const dotenv = require('dotenv');
-const fs = require('fs');
+const dotenv = require("dotenv");
+const fs = require("fs");
 
-module.exports = async function updateEnv(rootPath,data){
-   try {
-    await process.chdir(`${rootPath}/test123/`)
+module.exports = async function updateEnv(rootPath, data) {
+  try {
+    console.log("update env file", data);
+    await process.chdir(`${rootPath}/${data.application_id}/`);
 
     const fileData = `
     CONTENTSTACK_API_KEY=${data.api_key}
@@ -15,12 +16,16 @@ module.exports = async function updateEnv(rootPath,data){
     CONTENTSTACK_LIVE_PREVIEW=false
     CONTENTSTACK_LIVE_EDIT_TAGS=false
     NEXT_PUBLIC_HOSTED_URL=http://localhost:3000
-    `
-    fs.writeFile(`${rootPath}/${data.application_id}/nextjs-framework-cs/.env`, fileData, (err,res) => {
-        if(err) console.log("Error:",err);
-        console.log("Success:",res);
-    });
-   } catch (error) {
-    console.log("Error in updating Env of website",error);
-   }
-}
+    `;
+    fs.writeFile(
+      `${rootPath}/e_commerce/nextjs-framework-cs/.env`,
+      fileData,
+      (err, res) => {
+        if (err) console.log("Error:", err);
+        console.log("Success:", res);
+      }
+    );
+  } catch (error) {
+    console.log("Error in updating Env of website", error);
+  }
+};
