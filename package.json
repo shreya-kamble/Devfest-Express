@@ -1,0 +1,24 @@
+{
+  "name": "devfest-2023",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "archiver": "^6.0.1",
+    "axios": "^1.5.1",
+    "dotenv": "^16.3.1",
+    "files-from-path": "^1.0.0",
+    "form-data": "^4.0.0",
+    "mongodb": "^6.1.0",
+    "octokit": "^3.1.1",
+    "zip-a-folder": "^3.1.3"
+  },
+  "devDependencies": {
+    "tslib": "^2.6.2"
+  }
+}
