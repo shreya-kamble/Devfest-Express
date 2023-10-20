@@ -10,10 +10,7 @@ module.exports = async function cloneProject(rootPath, application_id) {
     await process.chdir(`${rootPath}/${application_id}`);
     let child;
 
-    child = spawn(`git`, [
-      `clone`,
-      "https://github.com/vivekcontentstack/nextjs-framework-cs",
-    ]);
+    child = spawn(`git`, [`clone`, "https://github.com/vivekcontentstack/nextjs-framework-cs"]);
     child.stdout.on("data", (data) => {
       console.log(`Executing git clone:\n${data}`);
     });
@@ -28,8 +25,9 @@ module.exports = async function cloneProject(rootPath, application_id) {
 
     child.on("close", (code) => {
       console.log(`Closing git clone`, code);
+      resolve();
     });
 
-    resolve();
+   
   });
 };

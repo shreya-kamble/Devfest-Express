@@ -9,17 +9,17 @@ let launchProjectUid, previewUrl,previewUid;
 
 const previewEnv =[
   { key: 'CONTENTSTACK_API_KEY', value: `${api_key}` },
-  { key: 'CONTENTSTACK_DELIVERY_TOKEN', value: `${body.tokens.preview}` },
+  { key: 'CONTENTSTACK_DELIVERY_TOKEN', value: `${delivery_token}` },
   { key: 'CONTENTSTACK_MANAGEMENT_TOKEN', value: `${management_token}` },
-  { key: 'CONTENTSTACK_REGION', value: `${process.env.SITE_REGION}` },
+  { key: 'CONTENTSTACK_REGION', value: `NA` },
   { key: 'CONTENTSTACK_ENVIRONMENT', value: "preview" },
-  { key: 'CONTENTSTACK_BRANCH', value: `${process.env.CS_BRANCH}` },
-  { key: 'CONTENTSTACK_LIVE_PREVIEW', value: 'true' },
+  { key: 'CONTENTSTACK_BRANCH', value: `main` },
+  { key: 'CONTENTSTACK_LIVE_PREVIEW', value: 'false' },
   { key: 'CONTENTSTACK_LIVE_EDIT_TAGS', value: 'true' },
   { key: 'DEFAULT_LOCALE', value: "en-us" },
-  { key: 'CONTENTSTACK_HOST', value: `${process.env.LAUNCH_API_HOST}` },
-  { key: 'CONTENTSTACK_APP_HOST', value: `${process.env.LAUNCH_UI_HOST}` },
-  { key: 'CONTENTSTACK_API_HOST', value: `${process.env.LAUNCH_API_HOST}` }
+  { key: 'CONTENTSTACK_HOST', value: `api.contentstack.io` },
+  { key: 'CONTENTSTACK_APP_HOST', value: `app.contentstack.com` },
+  { key: 'CONTENTSTACK_API_HOST', value: `api.contentstack.io` }
 
 ]
 
@@ -29,7 +29,7 @@ query: `
 mutation createGitProviderProject {
 importProject(
 project: {
-  name: "Compass Starter"
+  name: "Hack Fusion Five"
   projectType: "FILEUPLOAD"
   fileUpload: {
     uploadUid: "${launchUploadUid}"
@@ -37,10 +37,10 @@ project: {
   cmsStackApiKey: "${api_key}"
   description: ""
   environment: {
-    name: "preview"
+    name: "prod"
     description: ""
-    buildCommand:"${process.env.BUILD_COMMAND}"
-    frameworkPreset: "${process.env.FRAMEWORK}"
+    buildCommand:"npm run build"
+    frameworkPreset: "NEXTJS"
     outputDirectory: ".next"
     environmentVariables: ${structureEnvVariables(previewEnv)}
     uploadUid: "${launchUploadUid}"
@@ -67,7 +67,7 @@ project: {
 };
 
 return axios.post(
-    process.env.LAUNCH_BASE_API, 
+    `https://app.contentstack.com/launch-api/manage/graphql`, 
     JSON.stringify(createGitProviderProjectMutation()), 
    {
     headers: {

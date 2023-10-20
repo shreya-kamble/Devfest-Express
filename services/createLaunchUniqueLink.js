@@ -1,7 +1,7 @@
-const { default: axios } = require("axios");
+const axios = require('axios');
 
 const createUniqueLaunchLink = async(authtoken,org_uid)=>{
-  console.log("Creating Unique Launch Link",org_uid)
+  console.log("Creating Unique Launch Link",org_uid, process.env.LAUNCH_BASE_API)
  
   const createSignedUpload = ()=>{
     return {
@@ -23,7 +23,7 @@ const createUniqueLaunchLink = async(authtoken,org_uid)=>{
   
 
   return axios.post(
-    process.env.LAUNCH_BASE_API,
+    `https://app.contentstack.com/launch-api/manage/graphql`,
     JSON.stringify(createSignedUpload()),
     {
       headers: {
@@ -39,7 +39,7 @@ const createUniqueLaunchLink = async(authtoken,org_uid)=>{
      console.log("SIgneddata",await data.data)
 
         let signedUploadData= parsedcreateSignedUploadtResponse?.data?.createSignedUploadUrl;
-        console.log("SIgneddata1",signedUploadData)
+     
         
         return signedUploadData;
   }

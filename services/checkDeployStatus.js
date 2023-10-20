@@ -18,7 +18,7 @@ const checkDeployStatus = async(envDeployUid,projectUid,authToken,orgUid)=>{
       };
 
       return axios.post(
-        process.env.LAUNCH_LOGS_API,
+        'https://app.contentstack.com/launch-api/logs/graphql',
         JSON.stringify(getDeploymentLogs(envDeployUid)),
         {
             headers:{

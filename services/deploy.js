@@ -11,6 +11,9 @@ const updateEnv = require("./updateEnv");
 const updateGitRepo = require("./updateGitRepo");
 const uploadZip = require("./uploadZipToLaunch");
 const createGitRepo = require("./createGitRepo");
+const installWebsite = require("./installWebsite");
+const buildWebsite = require("./buildWebsite");
+const storeData = require("./storeData");
 
 module.exports = async function deploy(data, rootPath) {
   const structureEnvVariables = (envVar) => {
@@ -26,36 +29,44 @@ module.exports = async function deploy(data, rootPath) {
   let {
     api_key,
     management_token,
+    delivery_token,
     content_type,
     entry,
     application_id,
     org_uid,
     authToken,
   } = data;
+
+ 
+  await storeData({
+    api_key,
+    management_token,
+    delivery_token,
+    content_type,
+    entry,
+    application_id,
+    org_uid,
+    authToken,
+    deployed:false
+  })
   //create content type in CS stack
-  //   let ct_response = await createCT(api_key, management_token, content_type);
+    let ct_response = await createCT(api_key, management_token, content_type);
 
   //create Entry in CS stack
-  //   let entry_response = await createEntry(
-  //     api_key,
-  //     management_token,
-  //     (ctId = ct_response.content_type.uid),
-  //     entry
-  //   );
+    let entry_response = await createEntry(
+      api_key,
+      management_token,
+      (ctId = ct_response.content_type.uid),
+      entry
+    );
 
   //create reactapp
   //  await executeChildProcess('createReactApp',application_id);
   // await executeChildProcess('gitInit',"TEST");
   // await executeChildProcess('gitInit',application_id);
 
-  // const sourceDir = './${application_id}';
-  // const outputFilePath = `./tmp1/${application_id}.zip`;
-
-  //upload zi[]\p
-  //await uploadZip(__dirname,launchUploadUrl,launchUploadFields)
-
-  //copy directory
-  // copyDirectory(rootPath)
+  const source = `/Users/shreyakamble/Documents/Devfest-2023/Lambda/${application_id}/nextjs-framework-cs/`;
+  const dest = `/Users/shreyakamble/Documents/Devfest-2023/Lambda/tmp1/${application_id}.zip`;
 
   //clone website
   let clone_response = await cloneProject(rootPath, application_id);
@@ -63,27 +74,33 @@ module.exports = async function deploy(data, rootPath) {
   //change env of website
   await updateEnv(rootPath, data);
 
+// await installWebsite(rootPath,application_id);
+// await buildWebsite(rootPath,application_id)
   //create a git repo
-  await createGitRepo(application_id);
+  await createGitRepo(application_id,rootPath);
 
   //  // update git repo with nextjsfolder
-  await updateGitRepo("UPDATE", application_id);
+  await updateGitRepo("UPDATE", application_id,rootPath);
 
   //create zip of the website project folder
   await createZip(source, dest)
-    .then((outputFilePath) => {
-      console.log(`Zip file created at`);
+    .then(() => {
+      console.log(`Zip file created`);
     })
     .catch((err) => {
       console.error("Error zipping directory:", err);
     });
 
   //create unique link to upload zip
-  const signedUploadData = await createUniqueLaunchLink();
-  launchUploadUid = signedUploadData?.uploadUid;
-  launchUploadUrl = signedUploadData?.uploadUrl;
-  launchUploadFields = signedUploadData?.fields;
+  const signedUploadData = await createUniqueLaunchLink(authToken,org_uid);
+  let launchUploadUid = signedUploadData?.uploadUid;
+  let launchUploadUrl = signedUploadData?.uploadUrl;
+  let launchUploadFields = signedUploadData?.fields;
 
+  console.log(launchUploadUrl,launchUploadFields);
+
+//upload zi[]\p
+await uploadZip(rootPath,application_id,launchUploadUrl,launchUploadFields)
   //create Launch project
   const projectDetails = await createLaunchProject(
     authToken,
@@ -94,18 +111,19 @@ module.exports = async function deploy(data, rootPath) {
     launchUploadUid,
     structureEnvVariables
   );
-  projectUid = projectDetails?.launchProjectUid;
-  envUrl = projectDetails?.previewUrl;
-  envUid = projectDetails?.previewUid;
+  let projectUid = projectDetails?.launchProjectUid;
+  let envUrl = projectDetails?.previewUrl;
+  let envUid = projectDetails?.previewUid;
+  console.log(projectUid,envUrl, envUid);
 
   //check deploy logs
-  checkDeployStatus(envId, projectId, authToken, org_uid);
+  checkDeployStatus(envUid, projectUid, authToken, org_uid);
 
-  return {
-    statusCode: 200,
-    body: {
-      envUrl,
-      envUid,
-    },
-  };
+//   return {
+//     statusCode: 200,
+//     body: {
+//       envUrl,
+//       envUid,
+//     },
+//   };
 };
