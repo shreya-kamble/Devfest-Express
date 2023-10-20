@@ -17,7 +17,7 @@ module.exports = async function updateGitRepo(executingCmd, projectName,rootPath
             "remote",
             `add`,
             "origin1",
-            `https://github.com/shreya-kamble/${projectName}.git`,
+            `https://github.com/shreya-kamble/${projectName}test1.git`,
           ]);
   const s6 =spawnSync(`git`, [`push`, "-u", "origin1", "main"]);
 
