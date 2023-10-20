@@ -12,7 +12,7 @@ const previewEnv =[
   { key: 'CONTENTSTACK_DELIVERY_TOKEN', value: `${delivery_token}` },
   { key: 'CONTENTSTACK_MANAGEMENT_TOKEN', value: `${management_token}` },
   { key: 'CONTENTSTACK_REGION', value: `NA` },
-  { key: 'CONTENTSTACK_ENVIRONMENT', value: "preview" },
+  { key: 'CONTENTSTACK_ENVIRONMENT', value: "prod" },
   { key: 'CONTENTSTACK_BRANCH', value: `main` },
   { key: 'CONTENTSTACK_LIVE_PREVIEW', value: 'false' },
   { key: 'CONTENTSTACK_LIVE_EDIT_TAGS', value: 'true' },

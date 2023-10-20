@@ -1,5 +1,6 @@
 const checkDeployStatus = require("./checkDeployStatus");
 const cloneProject = require("./cloneProject");
+const cloneProject1 = require("./cloneProject1");
 const copyDirectory = require("./copyDirectory");
 const createCT = require("./createCT");
 const createEntry = require("./createEntry");
@@ -50,15 +51,15 @@ module.exports = async function deploy(data, rootPath) {
     deployed:false
   })
   //create content type in CS stack
-    let ct_response = await createCT(api_key, management_token, content_type);
+    // let ct_response = await createCT(api_key, management_token, content_type);
 
   //create Entry in CS stack
-    let entry_response = await createEntry(
-      api_key,
-      management_token,
-      (ctId = ct_response.content_type.uid),
-      entry
-    );
+    // let entry_response = await createEntry(
+    //   api_key,
+    //   management_token,
+    //   (ctId = ct_response.content_type.uid),
+    //   entry
+    // );
 
   //create reactapp
   //  await executeChildProcess('createReactApp',application_id);
@@ -70,6 +71,8 @@ module.exports = async function deploy(data, rootPath) {
 
   //clone website
   let clone_response = await cloneProject(rootPath, application_id);
+  let clone_response1 = await cloneProject1(rootPath, application_id);
+
 
   //change env of website
   await updateEnv(rootPath, data);

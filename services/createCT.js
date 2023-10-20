@@ -31,7 +31,7 @@ module.exports = async function createCT(
         resolve(CT);
       })
       .catch((err) => {
-        console.log("Error while creating new CT:");
+        console.log("Error while creating new CT:",err);
       });
   });
 };
